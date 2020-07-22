@@ -16,7 +16,7 @@ phases:
       # create new task definition
       - chmod +x create-new-task-definition.sh
       - ls
-      - /bin/bash create-new-task-definition.sh $IMAGE_REPO_NAME
+      - /bin/bash create-new-task-definition.sh "demo"
 
 artifacts:
   files:
