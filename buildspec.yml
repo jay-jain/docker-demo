@@ -3,8 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - $(aws ecr get-login --no-include-email)
   build:
     commands:
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION .
@@ -15,12 +14,9 @@ phases:
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
       # create new task definition
-      - chmod +x create-new-task-definition.sh
-      - create-new-task-definition.sh $IMAGE_REPO_NAME
+      - ./create-new-task-definition.sh $IMAGE_REPO_NAME
 
 artifacts:
   files:
     - 'appspec.yaml'
     - 'taskdef.json'
-
-    
